@@ -36,7 +36,7 @@ function Cone( gl, numSides, vertexShaderId, fragmentShaderId ) {
     
     for ( var i = 0; i < n; ++i ) {
         theta = i * dTheta;
-        positions.push( Math.cos(theta) + .7, Math.sin(theta), -2.0 );
+        positions.push( Math.cos(theta), Math.sin(theta), -1.0);
 
         indices.push(n - i);
     }
@@ -86,11 +86,11 @@ function Cone( gl, numSides, vertexShaderId, fragmentShaderId ) {
 
         // Draw the cone's base
         //
-        gl.drawElements( gl.TRIANGLE_FAN, this.indices.count, gl.UNSIGNED_SHORT, 0 );
+        gl.drawElements( gl.POINTS, this.indices.count, gl.UNSIGNED_SHORT, 0 );
 
         // Draw the cone's top
         //
-        var offset = this.indices.count * 2 /* sizeof(UNSIGNED_INT) */;
-        gl.drawElements( gl.LINES, this.indices.count, gl.UNSIGNED_SHORT, offset );
+        var offset = this.indices.count * 2.0 /* sizeof(UNSIGNED_INT) */;
+        gl.drawElements( gl.POINTS, this.indices.count, gl.UNSIGNED_SHORT, offset );
     }
 };

@@ -11,14 +11,14 @@
 	
 	void main() 
 	{
-	 gl_PointSize = 5.0;
+	 gl_PointSize = 10.0;
      gl_Position = vPosition;
 	}
   </script>
   <script id="Cone-fragment-shader" type="x-shader/x-fragment">
 	void main() 
 	{
-     gl_FragColor = vec4(1.0, 0.0, gl_FrontFacing ? 0.0 : 1.0, 1.0);
+     gl_FragColor = vec4(0.3, 0.6, 1.0, 1.0);
 	}
   </script>
 </head>
