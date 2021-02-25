@@ -1,7 +1,3 @@
-//
-//  Sphere.js
-//
-
 "use strict";
 
 function Sphere( slices, stacks, vertexShader, fragmentShader ) { 

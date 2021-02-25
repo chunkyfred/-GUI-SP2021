@@ -181,41 +181,22 @@ function render() {
   ms.pop();
   
   
-  Ename = "Earth";
-  Eplanet = Planets[Ename];
-  Edata = SolarSystem[Ename];
-
-  Eplanet.PointMode = false;
-
-  ms.push();
-  ms.rotate(Edata.year * time, Edata.axis);
-  ms.translate(Edata.distance , 0, 0);
-  ms.scale(Edata.radius);
-  gl.useProgram(Eplanet.program);
-  gl.uniformMatrix4fv(Eplanet.uniforms.MV, false, flatten(ms.current()));
-  gl.uniformMatrix4fv(Eplanet.uniforms.P, false, flatten(P));
-  gl.uniform4fv(Eplanet.uniforms.color, flatten(Edata.color));
-  Eplanet.render();
-  ms.pop();
-  
-  
-  name = "Moon";
-  planet = Planets[name];
-  data = SolarSystem[name];
+  name = "Earth";
+  planet = Planets[Ename];
+  data = SolarSystem[Ename];
 
   planet.PointMode = false;
 
   ms.push();
   ms.rotate(data.year * time, data.axis);
-  ms.translate(Edata.distance + data.distance , 0, 0);
+  ms.translate(data.distance , 0, 0);
   ms.scale(data.radius);
   gl.useProgram(planet.program);
   gl.uniformMatrix4fv(planet.uniforms.MV, false, flatten(ms.current()));
   gl.uniformMatrix4fv(planet.uniforms.P, false, flatten(P));
   gl.uniform4fv(planet.uniforms.color, flatten(data.color));
-  planet.render();
+  Eplanet.render();
   ms.pop();
-  
   
   name = "Mars";
   planet = Planets[name];
@@ -224,7 +205,7 @@ function render() {
   planet.PointMode = false;
 
   ms.push();
-  ms.rotate(data.year * time, data.axis);
+  ms.rotate((data.year * time) + ((data.year * time)/3), data.axis);
   ms.translate(data.distance , 0, 0);
   ms.scale(data.radius);
   gl.useProgram(planet.program);
