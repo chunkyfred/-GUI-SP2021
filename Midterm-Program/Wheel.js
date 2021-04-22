@@ -40,7 +40,7 @@ var far = 150;      // far clipping plane's distance
 // Animation variables
 var time = 0.0;      // time, our global time constant, which is 
                      // incremented every frame
-var timeDelta = 0.5; // the amount that time is updated each fraime
+var timeDelta = 0.5; // the amount that time is updated each frame
 
 //---------------------------------------------------------------------------
 //

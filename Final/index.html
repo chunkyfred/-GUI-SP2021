@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { margin: 0; }
+  </style>
+</head>
+  <body>
+  <script src="three.js"></script>
+  <script src="DAT.GUI.min.js"></script>
+  <script>
+  
+    var time = 0.0;      // time 
+	var timeDelta = 0.5; // time update per frame
+	var axis = new THREE.Vector3(0,1,0);
+	var speed = -0.02;
+  
+	const scene = new THREE.Scene();
+	const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+	const loader = new THREE.FontLoader();
+	
+
+	const renderer = new THREE.WebGLRenderer();
+	renderer.setSize( window.innerWidth, window.innerHeight );
+	renderer.shadowMap.enabled = true;
+	renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+	document.body.appendChild( renderer.domElement );
+	
+	const ambLight = new THREE.AmbientLight(0xffffff, 0.5);
+	scene.add( ambLight );
+	
+	const dirLight = new THREE.DirectionalLight( 0xffffff, 0.9 );
+	dirLight.position.set(0, 4, 3);
+	scene.add( dirLight );
+
+	const group = new THREE.Group();
+
+	const geometry = new THREE.SphereGeometry(60, 32, 32);
+	var material = new THREE.MeshPhongMaterial((Math.cos(time/15)/4) + 0.75, (Math.cos((time/15) + (3.14/2)) /4) + 0.75, (Math.cos((time/15) + 3.14)/4) + 0.75);
+	const sphere = new THREE.Mesh( geometry, material );
+
+	sphere.receiveShadow = true;
+	scene.add( sphere );
+	
+	dirLight.target = sphere;
+
+	var dispOne = 'A';
+	var dispTwo = 'B';
+	var dispThree = 'C';
+	var dispFour = 'D';
+	
+	loader.load( 'fonts/American Captain_Regular.json', function ( font ) {
+
+		var geometry = new THREE.TextGeometry( dispOne, {
+			font: font,
+			size: 60,
+			height: 5,
+			curveSegments: 12,
+			bevelEnabled: true,
+			bevelThickness: 20,
+			bevelSize: 2,
+			bevelOffset: 0,
+			bevelSegments: 5
+		} );
+		var textMaterial = new THREE.MeshPhongMaterial( { color: 0xff0000, specular: 0xffffff });
+		letter1 = new THREE.Mesh( geometry, textMaterial );
+		letter1.position.set(-17.5, -30, 55);
+		group.add( letter1 );
+
+		geometry = new THREE.TextGeometry( dispTwo, {
+			font: font,
+			size: 60,
+			height: 5,
+			curveSegments: 12,
+			bevelEnabled: true,
+			bevelThickness: 20,
+			bevelSize: 2,
+			bevelOffset: 0,
+			bevelSegments: 5
+		} );
+		var textMaterial = new THREE.MeshPhongMaterial( { color: 0xFFFF00, specular: 0xffffff });
+		letter2 = new THREE.Mesh( geometry, textMaterial );
+		letter2.rotation.y =  Math.PI / 2;
+		letter2.position.set(55, -30, 17.5);
+		group.add( letter2 );
+
+		geometry = new THREE.TextGeometry( dispThree, {
+			font: font,
+			size: 60,
+			height: 5,
+			curveSegments: 12,
+			bevelEnabled: true,
+			bevelThickness: 20,
+			bevelSize: 2,
+			bevelOffset: 0,
+			bevelSegments: 5
+		} );
+		var textMaterial = new THREE.MeshPhongMaterial( { color: 0x00ff00, specular: 0xffffff });
+		letter3 = new THREE.Mesh( geometry, textMaterial );
+		letter3.rotation.y =  Math.PI;
+		letter3.position.set(17.5, -30, -55);
+		group.add( letter3 );
+
+		geometry = new THREE.TextGeometry( dispFour, {
+			font: font,
+			size: 60,
+			height: 5,
+			curveSegments: 12,
+			bevelEnabled: true,
+			bevelThickness: 20,
+			bevelSize: 2,
+			bevelOffset: 0,
+			bevelSegments: 5
+		} );
+		var textMaterial = new THREE.MeshPhongMaterial( { color: 0x800080, specular: 0xffffff });
+		letter4 = new THREE.Mesh( geometry, textMaterial );
+		letter4.rotation.y =  3*(Math.PI) / 2;
+		letter4.position.set(-55, -30, -17.5);
+		group.add( letter4 );
+
+		
+	} );
+
+	scene.add( group );
+
+	var gui = new dat.GUI({
+   		height : 1 * 32 - 1
+	});
+
+	var params = {
+		textField: "abcd"
+	};
+
+	gui.add(params, "textField").onFinishChange(function (value) {
+		scene.remove(group);
+		group.remove(letter1);
+		group.remove(letter2);
+		group.remove(letter3);
+		group.remove(letter4);
+		dispOne = "";
+		dispTwo = "";
+		dispThree = "";
+		dispFour = "";
+		loader.load( 'fonts/American Captain_Regular.json', function ( font ) {
+		if (params.textField.length >= 1) {
+			dispOne = params.textField[0];
+			var geometry = new THREE.TextGeometry( dispOne, {
+				font: font,
+				size: 60,
+				height: 5,
+				curveSegments: 12,
+				bevelEnabled: true,
+				bevelThickness: 20,
+				bevelSize: 2,
+				bevelOffset: 0,
+				bevelSegments: 5
+			} );
+			var textMaterial = new THREE.MeshPhongMaterial( { color: 0xff0000, specular: 0xffffff });
+			letter1 = new THREE.Mesh( geometry, textMaterial );
+			letter1.position.set(-17.5, -30, 55);
+			group.add( letter1 );
+		}
+		if (params.textField.length >= 2) {
+			dispTwo = params.textField[1];
+			geometry = new THREE.TextGeometry( dispTwo, {
+				font: font,
+				size: 60,
+				height: 5,
+				curveSegments: 12,
+				bevelEnabled: true,
+				bevelThickness: 20,
+				bevelSize: 2,
+				bevelOffset: 0,
+				bevelSegments: 5
+			} );
+			var textMaterial = new THREE.MeshPhongMaterial( { color: 0xFFFF00, specular: 0xffffff });
+			letter2 = new THREE.Mesh( geometry, textMaterial );
+			letter2.rotation.y =  Math.PI / 2;
+			letter2.position.set(55, -30, 17.5);
+			group.add( letter2 );
+		}
+		if (params.textField.length >= 3) {
+			dispThree = params.textField[2];
+			geometry = new THREE.TextGeometry( dispThree, {
+				font: font,
+				size: 60,
+				height: 5,
+				curveSegments: 12,
+				bevelEnabled: true,
+				bevelThickness: 20,
+				bevelSize: 2,
+				bevelOffset: 0,
+				bevelSegments: 5
+			} );
+			var textMaterial = new THREE.MeshPhongMaterial( { color: 0x00ff00, specular: 0xffffff });
+			letter3 = new THREE.Mesh( geometry, textMaterial );
+			letter3.rotation.y =  Math.PI;
+			letter3.position.set(17.5, -30, -55);
+			group.add( letter3 );
+		}
+		if (params.textField.length >= 4) {
+			dispFour = params.textField[3];
+			geometry = new THREE.TextGeometry( dispFour, {
+				font: font,
+				size: 60,
+				height: 5,
+				curveSegments: 12,
+				bevelEnabled: true,
+				bevelThickness: 20,
+				bevelSize: 2,
+				bevelOffset: 0,
+				bevelSegments: 5
+			} );
+			var textMaterial = new THREE.MeshPhongMaterial( { color: 0x800080, specular: 0xffffff });
+			letter4 = new THREE.Mesh( geometry, textMaterial );
+			letter4.rotation.y =  3*(Math.PI) / 2;
+			letter4.position.set(-55, -30, -17.5);
+			group.add( letter4 );
+		}	
+		scene.add(group);
+		});
+	})
+
+	camera.position.z = 170;
+
+	
+
+	const animate = function () {
+		requestAnimationFrame( animate );
+		time += timeDelta;
+		group.rotateOnAxis(axis, speed);
+		
+		scene.background = new THREE.Color((Math.cos(time/30)/8) + 0.875, (Math.cos((time/30) + (3.14/2)) /8) + 0.875, (Math.cos((time/30) + 3.14)/8) + 0.875);
+		sphere.material.color.setRGB((Math.cos((time/30) + 3.14)/2) + 0.5, (Math.cos(time/30)/2) + 0.5, (Math.cos((time/30) + (3.14/2)) /2) + 0.5);
+
+		renderer.render( scene, camera );
+	};
+	animate();
+  </script>
+<body>
+  <canvas id="webgl-canvas" width="512" height="512"></canvas>
+</body>
+</html>
